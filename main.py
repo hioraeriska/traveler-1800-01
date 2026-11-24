@@ -25,9 +25,12 @@ def resolve_output_dir():
     return "/output"
 
 
-def build_entry():
-    """Return the entry text, validated against the gate."""
-    text = ENTRY.strip()
+def validate_entry(text):
+    """Validate the entry text and return it unchanged.
+
+    Raises ValueError on empty text, over 200 chars, or not exactly
+    one sentence.
+    """
     if not text:
         raise ValueError("entry is empty")
     if len(text) > MAX_CHARS:
@@ -35,6 +38,11 @@ def build_entry():
     if text.count(".") != 1:
         raise ValueError("entry must be exactly one sentence")
     return text
+
+
+def build_entry():
+    """Return the entry text, validated against the gate."""
+    return validate_entry(ENTRY.strip())
 
 
 def main():
